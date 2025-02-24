@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:animations/animations.dart';
 
 void main() {
   runApp(const MyApp());
@@ -40,7 +41,8 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
             SliverAppBar(
               toolbarHeight: 50,
               floating: false,
-              pinned: false, // keeps a portion of the app bar visible if desired
+              pinned:
+                  false, // keeps a portion of the app bar visible if desired
               titleSpacing: 30.0,
               centerTitle: false,
               title: Text(
@@ -61,6 +63,7 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                     "assets/icons/sign_out.svg",
                     colorFilter: ColorFilter.mode(
                         Color.fromARGB(255, 0, 0, 0), BlendMode.srcIn),
+                    //TODO: Program functionallity to the Sign In button
                   ),
                 ),
               ],
@@ -93,6 +96,7 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                             Padding(
                               padding: const EdgeInsets.only(left: 8.0),
                               child: Icon(Icons.add, color: Colors.white),
+                              //TODO: Program functionallity to the Add Trip button
                             ),
                             Spacer(),
                             Padding(
@@ -119,16 +123,14 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                   crossAxisSpacing: 15,
                   padding: EdgeInsets.only(bottom: 20.0),
                   children: [
-                    TripBtn(),
-                    TripBtn(),
-                    TripBtn(),
-                    TripBtn(),
-                    TripBtn(),
-                    TripBtn(),
-                    TripBtn(),
-                    TripBtn(),
-                    TripBtn(),
-
+                    //TODO: Add a loop to allocate all trip portals dynamically
+                    TripPortal(),
+                    TripPortal(),
+                    TripPortal(),
+                    TripPortal(),
+                    TripPortal(),
+                    TripPortal(),
+                    TripPortal(),
                   ],
                 ),
               ),
@@ -140,22 +142,139 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
   }
 }
 
-class TripBtn extends StatefulWidget {
-  TripBtn();
+class TripPortal extends StatefulWidget {
+  const TripPortal({super.key});
   @override
-  TripBtnState createState() => TripBtnState();
+  TripPortalState createState() => TripPortalState();
 }
 
-class TripBtnState extends State<TripBtn> {
+class TripPortalState extends State<TripPortal> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-        child: FloatingActionButton(
-      onPressed: () => {},
-      child: Text("TripBtn",
-          style: TextStyle(
-            fontSize: 15,
-          )),
-    ));
+    return OpenContainer(
+      transitionDuration: Duration(milliseconds: 500),
+      transitionType: ContainerTransitionType.fadeThrough,
+      closedShape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      closedElevation: 6.0,
+      openBuilder: (BuildContext context, VoidCallback _) {
+        // The destination page.
+        return SecondPage();
+      },
+      closedBuilder: (BuildContext context, VoidCallback openContainer) {
+        // The closed state shows a FloatingActionButton.
+        return GestureDetector(
+          onTap: openContainer,
+          child: TripInfoCard(
+            title: "Trip Portal",
+            description: "Explore the details of this trip.",
+            imageUrl:
+                "https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
+          ),
+          //TODO: Set the child of the button to the Trip Cover
+        );
+      },
+    );
+  }
+}
+
+class TripInfoCard extends StatelessWidget {
+  final String title;
+  final String description;
+  final String imageUrl;
+
+  const TripInfoCard({
+    super.key,
+    required this.title,
+    required this.description,
+    required this.imageUrl,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ClipRRect(
+      // Ensure the shape of the card has smooth, rounded edges.
+      borderRadius: BorderRadius.circular(16.0),
+      child: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16.0),
+          boxShadow: const [
+            BoxShadow(
+              color: Colors.black26,
+              blurRadius: 4,
+              offset: Offset(2, 2),
+            ),
+          ],
+        ),
+        // Using Expanded and flex factors to split the available space.
+        child: Column(
+          children: [
+            // The image covers the upper third.
+            Expanded(
+              flex: 1,
+              child: Image.network(
+                imageUrl,
+                width: double.infinity,
+                fit: BoxFit.cover,
+              ),
+            ),
+            // The text information covers the lower two-thirds.
+            Expanded(
+              flex: 2,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: const TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    const SizedBox(height: 4),
+                    Text(
+                      description,
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Colors.grey[700],
+                      ),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+//////////////////////****** TEST ******//////////////////////
+class SecondPage extends StatelessWidget {
+  const SecondPage({super.key});
+
+  // The page that appears after the transition.
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Trip Page'),
+      ),
+      body: Center(
+        child: Text('Welcome to the Trip page!'),
+      ),
+    );
   }
 }
