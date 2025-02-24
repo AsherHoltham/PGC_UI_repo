@@ -34,68 +34,127 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            toolbarHeight: 50,
-            centerTitle: false,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 30.0, top: 15.0),
-              child: Text(
+      body: NestedScrollView(
+        headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
+          return <Widget>[
+            SliverAppBar(
+              toolbarHeight: 50,
+              floating: false,
+              pinned: false, // keeps a portion of the app bar visible if desired
+              titleSpacing: 30.0,
+              title: Text(
                 'Personal Group Coordinator',
                 style: TextStyle(fontSize: 16.5, fontWeight: FontWeight.bold),
               ),
-            ),
-            leadingWidth: 300,
-            bottom: PreferredSize(
-              preferredSize: Size.fromHeight(1.0),
-              child: Container(
-                color: const Color.fromARGB(255, 236, 235, 235),
-                height: 2.0,
+              bottom: PreferredSize(
+                preferredSize: Size.fromHeight(2.0),
+                child: Container(
+                  color: Color.fromARGB(255, 236, 235, 235),
+                  height: 2.0,
+                ),
               ),
-            ),
-            actions: [
-              Container(
-                margin: EdgeInsets.only(right: 30.0),
-                child: SvgPicture.asset("assets/icons/sign_out.svg",
+              actions: [
+                Padding(
+                  padding: EdgeInsets.only(right: 30.0),
+                  child: SvgPicture.asset(
+                    "assets/icons/sign_out.svg",
                     colorFilter: ColorFilter.mode(
-                        Color.fromARGB(255, 0, 0, 0), BlendMode.srcIn)),
-              ),
-            ]),
+                        Color.fromARGB(255, 0, 0, 0), BlendMode.srcIn),
+                  ),
+                ),
+              ],
+            )
+          ];
+        },
         body: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 30.0, right: 30.0),
-            child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+          padding: const EdgeInsets.only(top: 8.0, left: 30.0, right: 30.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Row(
                 children: [
-                  Row(children: [
-                    Text("My Trips",
-                        style: TextStyle(
-                            fontSize: 15.5, fontWeight: FontWeight.w500)),
-                    const Spacer(),
-                    SizedBox(
-                        width: 100.0,
-                        height: 40.0,
-                        child: FloatingActionButton(
-                            onPressed: () => {},
-                            backgroundColor:
-                                const Color.fromARGB(255, 41, 52, 204),
-                            child: Row(children: [
-                              Padding(
-                                  padding: const EdgeInsets.only(left: 8.0),
-                                  child: const Icon(Icons.add,
-                                      color:
-                                          Color.fromARGB(255, 255, 255, 255))),
-                              const Spacer(),
-                              Padding(
-                                padding: const EdgeInsets.only(right: 12.0),
-                                child: Text("New Trip",
-                                    style: TextStyle(
-                                        fontSize: 11.5,
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255))),
-                              )
-                            ])))
-                  ]),
-                  
-                
-                ])));
+                  Text(
+                    "My Trips",
+                    style:
+                        TextStyle(fontSize: 15.5, fontWeight: FontWeight.w500),
+                  ),
+                  Spacer(),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 10.0),
+                    child: SizedBox(
+                      width: 100.0,
+                      height: 40.0,
+                      child: FloatingActionButton(
+                        onPressed: () {},
+                        backgroundColor: Color.fromARGB(255, 41, 52, 204),
+                        child: Row(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 8.0),
+                              child: Icon(Icons.add, color: Colors.white),
+                            ),
+                            Spacer(),
+                            Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: Text(
+                                "New Trip",
+                                style: TextStyle(
+                                  fontSize: 11.5,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                  )
+                ],
+              ),
+              Expanded(
+                child: GridView.count(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 15,
+                  crossAxisSpacing: 15,
+                  padding: EdgeInsets.only(bottom: 20.0),
+                  children: [
+                    TripBtn(),
+                    TripBtn(),
+                    TripBtn(),
+                    TripBtn(),
+                    TripBtn(),
+                    TripBtn(),
+                    TripBtn(),
+                    TripBtn(),
+                    TripBtn(),
+
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class TripBtn extends StatefulWidget {
+  TripBtn();
+  @override
+  TripBtnState createState() => TripBtnState();
+}
+
+class TripBtnState extends State<TripBtn> {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        child: FloatingActionButton(
+      onPressed: () => {},
+      child: Text("TripBtn",
+          style: TextStyle(
+            fontSize: 15,
+          )),
+    ));
   }
 }
