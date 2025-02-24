@@ -42,6 +42,7 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
               floating: false,
               pinned: false, // keeps a portion of the app bar visible if desired
               titleSpacing: 30.0,
+              centerTitle: false,
               title: Text(
                 'Personal Group Coordinator',
                 style: TextStyle(fontSize: 16.5, fontWeight: FontWeight.bold),
