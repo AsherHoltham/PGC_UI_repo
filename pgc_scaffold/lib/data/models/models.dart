@@ -12,12 +12,12 @@ const String idType = "INTEGER PRIMARY KEY AUTOINCREMENT";
 const String textTypeNullable = "TEXT";
 const String textType = "TEXT NOT NULL";
 
-class TripModel {
+class Trip {
   int? id;
   String title;
   String description;
 
-  TripModel({
+  Trip({
     this.id,
     required this.title,
     required this.description,
@@ -30,18 +30,18 @@ class TripModel {
       };
 
   // Create a YourModel instance from a Map.
-  static TripModel fromJson(Map<String, dynamic> json) => TripModel(
+  static Trip fromJson(Map<String, dynamic> json) => Trip(
         id: json['_id'] as int?,
         title: json['title'] as String,
         description: json['description'] as String,
       );
 
-  TripModel copyWith({
+  Trip copyWith({
     int? id,
     String? title,
     String? description,
   }) =>
-      TripModel(
+      Trip(
         id: id ?? this.id,
         title: title ?? this.title,
         description: description ?? this.description,

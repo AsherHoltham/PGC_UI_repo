@@ -151,9 +151,7 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    int crossAxisCount = constraints.maxWidth ~/ 300 > 3
-                        ? 3
-                        : constraints.maxWidth ~/ 300;
+                    int crossAxisCount = constraints.maxWidth ~/ 300 > 3 ? 3 : constraints.maxWidth ~/ 300;
                     return GridView.count(
                       crossAxisCount: crossAxisCount,
                       mainAxisSpacing: 15,
