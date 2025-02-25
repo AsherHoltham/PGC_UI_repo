@@ -17,12 +17,12 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
       pageBuilder: (context, anim1, anim2) {
         return Material(
           type: MaterialType.transparency,
-          child: Center(
-            child: Container(
+          child: LayoutBuilder(builder: (context, constraints) {
+            return Container(
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.symmetric(
-                  horizontal: ScreenSize.width / 10,
-                  vertical: ScreenSize.height / 5),
+                  horizontal: constraints.maxWidth / 7,
+                  vertical: constraints.maxHeight / 10),
               decoration: BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(10),
@@ -52,8 +52,8 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                   ),
                 ],
               ),
-            ),
-          ),
+            );
+          }),
         );
       },
       transitionBuilder: (context, anim1, anim2, child) {
@@ -75,8 +75,7 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
             SliverAppBar(
               toolbarHeight: 50,
               floating: false,
-              pinned:
-                  false, // keeps a portion of the app bar visible if desired
+              pinned: true, // keeps a portion of the app bar visible if desired
               titleSpacing: 30.0,
               centerTitle: false,
               title: Text(
@@ -152,11 +151,9 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    int crossAxisCount = constraints.maxWidth > 800
+                    int crossAxisCount = constraints.maxWidth ~/ 300 > 3
                         ? 3
-                        : constraints.maxWidth > 400
-                            ? 2
-                            : 1;
+                        : constraints.maxWidth ~/ 300;
                     return GridView.count(
                       crossAxisCount: crossAxisCount,
                       mainAxisSpacing: 15,
