@@ -1,4 +1,4 @@
-//*** Trips SQFLITE DATABASE SCHEMAS ***//
+//*** Trips SQFLITE DATABASE MODELS ***//
 const String tableName = 'trips';
 
 const String idField = '_id';
