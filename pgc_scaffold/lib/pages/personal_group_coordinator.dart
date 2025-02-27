@@ -8,10 +8,14 @@ class PersonalGroupCoordinatorPage extends StatefulWidget {
 
 class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
   final List<TripInfo> tripInfoList = [];
+  final _mTitleController = TextEditingController();
+  final _mLocationController = TextEditingController();
 
   @override
   void dispose() {
     Hive.box('trip_info').close();
+    _mTitleController.dispose();
+    _mLocationController.dispose();
     super.dispose();
   }
 
@@ -30,10 +34,10 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
               padding: EdgeInsets.all(20),
               margin: EdgeInsets.symmetric(
                   horizontal: constraints.maxWidth / 7,
-                  vertical: constraints.maxHeight / 10),
+                  vertical: constraints.maxWidth / 7 * 3),
               decoration: BoxDecoration(
                 color: Colors.white,
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(20),
               ),
               // Use a Stack to position the "X" button over the content.
               child: Stack(
@@ -43,7 +47,23 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("Plan New Trip:"),
+                      Text("Plan New Trip", style: TextStyle(fontSize: 16.5)),
+                      TextFormField(
+                        controller: _mTitleController,
+                        decoration: InputDecoration(labelText: 'Title'),
+                      ),
+                      TextFormField(
+                        controller: _mLocationController,
+                        decoration: InputDecoration(labelText: 'Location'),
+                      ),
+                      ElevatedButton(
+                        onPressed: () {
+                          final title = _mTitleController.text;
+                          final location = _mLocationController.text;
+                          //TODO: Push the title and location to the db and dynamically allocate a new trip prtal
+                        },
+                        child: Text('Submit'),
+                      ),
                       // Add additional widgets here for trip creation.
                     ],
                   ),
