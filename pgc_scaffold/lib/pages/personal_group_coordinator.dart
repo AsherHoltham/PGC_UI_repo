@@ -7,6 +7,14 @@ class PersonalGroupCoordinatorPage extends StatefulWidget {
 }
 
 class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
+  final List<TripInfo> tripInfoList = [];
+
+  @override
+  void dispose() {
+    Hive.box('trip_info').close();
+    super.dispose();
+  }
+
   void _openTripDialog() async {
     await showGeneralDialog(
       context: context,
@@ -151,7 +159,9 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
               Expanded(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    int crossAxisCount = constraints.maxWidth ~/ 300 > 3 ? 3 : constraints.maxWidth ~/ 300;
+                    int crossAxisCount = constraints.maxWidth ~/ 300 > 3
+                        ? 3
+                        : constraints.maxWidth ~/ 300;
                     return GridView.count(
                       crossAxisCount: crossAxisCount,
                       mainAxisSpacing: 15,

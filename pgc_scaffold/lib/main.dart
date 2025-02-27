@@ -1,6 +1,14 @@
 import 'exports.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await Hive.initFlutter();
+
+  Hive.registerAdapter(TripInfoAdapter());
+
+  await Hive.openBox<TripInfo>('trip_info');
+
   runApp(const MyApp());
 }
 
