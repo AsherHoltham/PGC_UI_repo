@@ -1,7 +1,8 @@
 import '../exports.dart';
 
 class TripPortal extends StatefulWidget {
-  const TripPortal({super.key});
+  final TripInfo tripInfo;
+  const TripPortal({super.key, required this.tripInfo});
   @override
   TripPortalState createState() => TripPortalState();
 }
@@ -25,8 +26,8 @@ class TripPortalState extends State<TripPortal> {
         return GestureDetector(
           onTap: openContainer,
           child: TripInfoCard(
-            title: "Trip Portal",
-            description: "Explore the details of this trip.",
+            title: widget.tripInfo.title,
+            location: widget.tripInfo.location,
             imageUrl:
                 "https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
           ),

@@ -2,13 +2,13 @@ import '../exports.dart';
 
 class TripInfoCard extends StatelessWidget {
   final String title;
-  final String description;
+  final String location;
   final String imageUrl;
 
   const TripInfoCard({
     super.key,
     required this.title,
-    required this.description,
+    required this.location,
     required this.imageUrl,
   });
 
@@ -63,7 +63,7 @@ class TripInfoCard extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      description,
+                      location,
                       style: TextStyle(
                         fontSize: 12,
                         color: Colors.grey[700],
