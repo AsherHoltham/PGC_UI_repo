@@ -167,9 +167,34 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                                     lastDate: DateTime(2101),
                                   );
                                   if (pickedDate != null) {
-                                    _mEndDateController.text =
-                                        DateFormat('yyyy-MM-dd')
-                                            .format(pickedDate);
+                                    // Check if a start date has been selected
+                                    if (_mStartDateController.text.isNotEmpty) {
+                                      DateTime startDate =
+                                          DateFormat('yyyy-MM-dd').parse(
+                                              _mStartDateController.text);
+                                      // Validate that the end date is after the start date
+                                      if (pickedDate.isAfter(startDate)) {
+                                        _mEndDateController.text =
+                                            DateFormat('yyyy-MM-dd')
+                                                .format(pickedDate);
+                                      } else {
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                                'End Date must be later than Start Date.'),
+                                          ),
+                                        );
+                                      }
+                                    } else {
+                                      ScaffoldMessenger.of(context)
+                                          .showSnackBar(
+                                        SnackBar(
+                                          content: Text(
+                                              'Please select a Start Date first.'),
+                                        ),
+                                      );
+                                    }
                                   }
                                 },
                               ),
