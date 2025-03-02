@@ -3,6 +3,7 @@ import '../exports.dart';
 class TripPortal extends StatefulWidget {
   final TripInfo tripInfo;
   const TripPortal({super.key, required this.tripInfo});
+
   @override
   TripPortalState createState() => TripPortalState();
 }
@@ -11,16 +12,18 @@ class TripPortalState extends State<TripPortal> {
   @override
   Widget build(BuildContext context) {
     return OpenContainer(
-      transitionDuration: Duration(milliseconds: 500),
+      transitionDuration: const Duration(milliseconds: 500),
       transitionType: ContainerTransitionType.fadeThrough,
       closedShape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16.0),
       ),
       closedElevation: 6.0,
+
+      // TODO: Pass TripInfo to TripPage to display its details
       openBuilder: (BuildContext context, VoidCallback _) {
-        // The destination page.
-        return TripPage();
+        return TripPage(tripInfo: widget.tripInfo);
       },
+
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
         return GestureDetector(
           onTap: openContainer,
@@ -28,10 +31,9 @@ class TripPortalState extends State<TripPortal> {
             decoration: BoxDecoration(
               border: Border.all(
                 color: Colors.lightBlue, // Light blue border color
-                width: 1.0, // Adjust the width for a very thin border
+                width: 1.0, // Thin border
               ),
-              borderRadius: BorderRadius.circular(
-                  16.0), // Same radius as your closedShape
+              borderRadius: BorderRadius.circular(16.0),
             ),
             child: TripInfoCard(
               title: widget.tripInfo.title,
