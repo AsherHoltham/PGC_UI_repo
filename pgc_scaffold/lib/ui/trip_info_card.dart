@@ -36,7 +36,7 @@ class TripInfoCard extends StatelessWidget {
           children: [
             // The image covers the upper third.
             Expanded(
-              flex: 1,
+              flex: 4,
               child: Image.network(
                 imageUrl,
                 width: double.infinity,
@@ -45,7 +45,7 @@ class TripInfoCard extends StatelessWidget {
             ),
             // The text information covers the lower two-thirds.
             Expanded(
-              flex: 2,
+              flex: 5,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

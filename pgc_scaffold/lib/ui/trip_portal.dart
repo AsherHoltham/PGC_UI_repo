@@ -22,16 +22,24 @@ class TripPortalState extends State<TripPortal> {
         return TripPage();
       },
       closedBuilder: (BuildContext context, VoidCallback openContainer) {
-        // The closed state shows a FloatingActionButton.
         return GestureDetector(
           onTap: openContainer,
-          child: TripInfoCard(
-            title: widget.tripInfo.title,
-            location: widget.tripInfo.location,
-            imageUrl:
-                "https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
+          child: Container(
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.lightBlue, // Light blue border color
+                width: 1.0, // Adjust the width for a very thin border
+              ),
+              borderRadius: BorderRadius.circular(
+                  16.0), // Same radius as your closedShape
+            ),
+            child: TripInfoCard(
+              title: widget.tripInfo.title,
+              location: widget.tripInfo.location,
+              imageUrl:
+                  "https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
+            ),
           ),
-          //TODO: Set the child of the button to the Trip Cover
         );
       },
     );

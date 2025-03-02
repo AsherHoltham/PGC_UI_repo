@@ -22,8 +22,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'PGC',
       theme: ThemeData(
-        textTheme:
-            GoogleFonts.nunitoSansTextTheme(), // Apply Nunito Sans globally
+        scaffoldBackgroundColor: Colors.white,
       ),
       home: const PersonalGroupCoordinatorPage(),
     );

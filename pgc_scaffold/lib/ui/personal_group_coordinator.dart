@@ -19,22 +19,6 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
     _tripInfoBloc = TripInfoBloc(repository: TripInfoRepository());
     // Load initial trip data
     _tripInfoBloc.add(LoadTripInfos());
-
-    // (Optional) Listeners to update cursor position for the text fields.
-    _mTitleController.addListener(() {
-      final text = _mTitleController.text;
-      _mTitleController.value = _mTitleController.value.copyWith(
-        text: text,
-        selection: TextSelection.collapsed(offset: text.length),
-      );
-    });
-    _mLocationController.addListener(() {
-      final text = _mLocationController.text;
-      _mLocationController.value = _mLocationController.value.copyWith(
-        text: text,
-        selection: TextSelection.collapsed(offset: text.length),
-      );
-    });
   }
 
   @override
@@ -92,7 +76,8 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                           _tripInfoBloc.add(
                             AddTripInfoEvent(title: title, location: location),
                           );
-                          
+                          _mTitleController.clear();
+                          _mLocationController.clear();
                           Navigator.of(context).pop(); // Close the dialog.
                         },
                         child: Text('Submit'),
@@ -135,6 +120,7 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
           headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
             return <Widget>[
               SliverAppBar(
+                backgroundColor: Colors.white,
                 toolbarHeight: 50,
                 floating: false,
                 pinned: true, // Keeps a portion of the app bar visible.
@@ -165,7 +151,11 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
             ];
           },
           body: Padding(
-            padding: const EdgeInsets.only(top: 8.0, left: 30.0, right: 30.0),
+            padding: const EdgeInsets.only(
+              top: 20.0,
+              left: 30.0,
+              right: 30.0,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -174,7 +164,7 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                     Text(
                       "My Trips",
                       style: TextStyle(
-                          fontSize: 15.5, fontWeight: FontWeight.w500),
+                          fontSize: 15.5, fontWeight: FontWeight.w900),
                     ),
                     Spacer(),
                     Padding(
