@@ -24,7 +24,7 @@ class TripInfoCard extends StatelessWidget {
 
     String tripStatus;
     if (now.isBefore(startDateTime)) {
-      final int daysUntilTrip = startDateTime.difference(now).inDays;
+      final int daysUntilTrip = startDateTime.difference(now).inDays + 1;
       tripStatus = "in $daysUntilTrip day${daysUntilTrip == 1 ? "" : "s"}";
     } else if (now.isAfter(endDateTime)) {
       final int daysSinceTripEnded = now.difference(endDateTime).inDays;
@@ -37,8 +37,6 @@ class TripInfoCard extends StatelessWidget {
     return ClipRRect(
       borderRadius: BorderRadius.circular(16.0),
       child: Container(
-        width: double.infinity,
-        height: double.infinity,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16.0),
@@ -51,80 +49,126 @@ class TripInfoCard extends StatelessWidget {
           ],
         ),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Trip image
-            Expanded(
-              flex: 4,
+            // Trip image at the top
+            AspectRatio(
+              aspectRatio: 16 / 9,
               child: Image.network(
                 imageUrl,
-                width: double.infinity,
                 fit: BoxFit.cover,
               ),
             ),
-            // Text information
-            Expanded(
-              flex: 5,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    // Bold and larger title just below the image.
-                    Text(
-                      title,
-                      style: const TextStyle(
-                        fontSize: 18, // larger than the other info
-                        fontWeight: FontWeight.bold,
+
+            // Card content
+            Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Title (e.g., "NYC")
+                  Text(
+                    title,
+                    style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 4),
+
+                  // Location row with pin icon
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/location_pin.svg',
+                        width: 16,
+                        height: 16,
                       ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    const SizedBox(height: 4),
-                    // Location info with icon directly below the title.
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/location_pin.svg',
-                          width: 16,
-                          height: 16,
-                        ),
-                        const SizedBox(width: 4),
-                        Expanded(
-                          child: Text(
-                            location,
-                            style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey[700],
-                            ),
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(
-                        height: 8), // offset the trip status below location.
-                    // Trip status info with calendar icon.
-                    Row(
-                      children: [
-                        SvgPicture.asset(
-                          'assets/icons/pgc_calendar_icon.svg',
-                          width: 16,
-                          height: 16,
-                        ),
-                        const SizedBox(width: 4),
-                        Text(
-                          tripStatus,
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          location,
                           style: TextStyle(
                             fontSize: 14,
-                            color: Colors.grey[600],
+                            color: Colors.grey[700],
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 8),
+
+                  // Trip status row with calendar icon (e.g. "ended 30 days ago")
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/pgc_calendar_icon.svg',
+                        width: 16,
+                        height: 16,
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        tripStatus,
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.grey[600],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 12),
+
+                  // A row with "A" and "H" placeholders + 'View Details' on the right
+                  Row(
+                    children: [
+                      SvgPicture.asset(
+                        'assets/icons/users_icon.svg',
+                        width: 16,
+                        height: 16,
+                      ),
+                      const SizedBox(width: 4),
+
+                      // Circular placeholder #1
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.blueAccent,
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'A',
+                            style: TextStyle(color: Colors.white),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      ),
+                      const SizedBox(width: 2),
+
+                      // Circular placeholder #2
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: Colors.orangeAccent,
+                        ),
+                        child: const Center(
+                          child: Text(
+                            'H',
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ),
+                      const Spacer(),
+                    ],
+                  ),
+                ],
               ),
             ),
           ],
