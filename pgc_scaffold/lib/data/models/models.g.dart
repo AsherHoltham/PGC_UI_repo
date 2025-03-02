@@ -18,17 +18,23 @@ class TripInfoAdapter extends TypeAdapter<TripInfo> {
     };
     return TripInfo()
       ..title = fields[0] as String
-      ..location = fields[1] as String;
+      ..location = fields[1] as String
+      ..startDate = fields[2] as String
+      ..endDate = fields[3] as String;
   }
 
   @override
   void write(BinaryWriter writer, TripInfo obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.title)
       ..writeByte(1)
-      ..write(obj.location);
+      ..write(obj.location)
+      ..writeByte(2)
+      ..write(obj.startDate)
+      ..writeByte(3)
+      ..write(obj.endDate);
   }
 
   @override

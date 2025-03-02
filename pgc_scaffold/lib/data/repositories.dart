@@ -9,10 +9,13 @@ class TripInfoRepository {
     return await Hive.openBox<TripInfo>('myBox');
   }
 
-  Future<void> addTripInfo(String title, String location) async {
+  Future<void> addTripInfo(
+      String title, String location, String startDate, String endDate) async {
     final tripInfo = TripInfo()
       ..title = title
-      ..location = location;
+      ..location = location
+      ..startDate = startDate
+      ..endDate = endDate;
 
     final box = Boxes.getTripInfo();
     await box.add(tripInfo);

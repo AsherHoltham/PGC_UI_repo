@@ -1,4 +1,5 @@
 import '../exports.dart';
+import 'package:intl/intl.dart';
 
 class PersonalGroupCoordinatorPage extends StatefulWidget {
   const PersonalGroupCoordinatorPage({super.key});
@@ -9,6 +10,8 @@ class PersonalGroupCoordinatorPage extends StatefulWidget {
 class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
   final _mTitleController = TextEditingController();
   final _mLocationController = TextEditingController();
+  final _mStartDateController = TextEditingController();
+  final _mEndDateController = TextEditingController();
 
   // Instantiate the TripInfoBloc with the repository
   late final TripInfoBloc _tripInfoBloc;
@@ -27,6 +30,8 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
     Hive.box('trip_info').close();
     _mTitleController.dispose();
     _mLocationController.dispose();
+    _mStartDateController.dispose();
+    _mEndDateController.dispose();
     _tripInfoBloc.close();
     super.dispose();
   }
@@ -68,13 +73,71 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                         controller: _mLocationController,
                         decoration: InputDecoration(labelText: 'Location'),
                       ),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextFormField(
+                              controller: _mStartDateController,
+                              readOnly: true, // Prevent manual editing.
+                              decoration: InputDecoration(
+                                labelText: 'Start Date',
+                                suffixIcon: Icon(Icons.calendar_today),
+                              ),
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2101),
+                                );
+                                if (pickedDate != null) {
+                                  _mStartDateController.text =
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(pickedDate);
+                                }
+                              },
+                            ),
+                          ),
+                          SizedBox(width: 8.0), // Spacing between the fields.
+                          Expanded(
+                            child: TextFormField(
+                              controller: _mEndDateController,
+                              readOnly: true,
+                              decoration: InputDecoration(
+                                labelText: 'End Date',
+                                suffixIcon: Icon(Icons.calendar_today),
+                              ),
+                              onTap: () async {
+                                DateTime? pickedDate = await showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(2101),
+                                );
+                                if (pickedDate != null) {
+                                  _mEndDateController.text =
+                                      DateFormat('yyyy-MM-dd')
+                                          .format(pickedDate);
+                                }
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                       ElevatedButton(
                         onPressed: () {
                           final title = _mTitleController.text;
                           final location = _mLocationController.text;
+                          final startDate = _mStartDateController.text;
+                          final endDate = _mEndDateController.text;
                           // Dispatch an event to add the new trip.
                           _tripInfoBloc.add(
-                            AddTripInfoEvent(title: title, location: location),
+                            AddTripInfoEvent(
+                              title: title,
+                              location: location,
+                              startDate: startDate,
+                              endDate: endDate,
+                            ),
                           );
                           _mTitleController.clear();
                           _mLocationController.clear();

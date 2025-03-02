@@ -36,6 +36,8 @@ class TripPortalState extends State<TripPortal> {
             child: TripInfoCard(
               title: widget.tripInfo.title,
               location: widget.tripInfo.location,
+              startDate: widget.tripInfo.startDate,
+              endDate: widget.tripInfo.endDate,
               imageUrl:
                   "https://images.pexels.com/photos/371633/pexels-photo-371633.jpeg?auto=compress&cs=tinysrgb&h=350",
             ),

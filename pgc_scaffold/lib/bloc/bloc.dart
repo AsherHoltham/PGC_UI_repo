@@ -7,7 +7,13 @@ class LoadTripInfos extends TripInfoEvent {}
 class AddTripInfoEvent extends TripInfoEvent {
   final String title;
   final String location;
-  AddTripInfoEvent({required this.title, required this.location});
+  final String startDate;
+  final String endDate;
+  AddTripInfoEvent(
+      {required this.title,
+      required this.location,
+      required this.startDate,
+      required this.endDate});
 }
 
 abstract class TripInfoState {}
@@ -45,7 +51,8 @@ class TripInfoBloc extends Bloc<TripInfoEvent, TripInfoState> {
     on<AddTripInfoEvent>((event, emit) async {
       try {
         // Add new trip using the repository
-        await repository.addTripInfo(event.title, event.location);
+        await repository.addTripInfo(
+            event.title, event.location, event.startDate, event.endDate);
         // Reload the trips after the insertion
         final box = Boxes.getTripInfo();
         final trips = box.values.toList();

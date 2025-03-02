@@ -10,4 +10,10 @@ class TripInfo extends HiveObject {
 
   @HiveField(1)
   late String location;
+
+  @HiveField(2)
+  late String startDate;
+
+  @HiveField(3)
+  late String endDate;
 }
