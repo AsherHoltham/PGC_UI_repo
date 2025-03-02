@@ -36,136 +36,199 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
     super.dispose();
   }
 
-  void _openTripDialog() async {
+  void _openTripDialog(
+    BuildContext context,
+    TripInfoBloc tripInfoBloc,
+    TextEditingController mTitleController,
+    TextEditingController mLocationController,
+    TextEditingController mStartDateController,
+    TextEditingController mEndDateController,
+  ) async {
     await showGeneralDialog(
       context: context,
-      barrierDismissible: false, // Disable dismissing by tapping outside.
+      barrierDismissible: false,
       barrierLabel: "Trip Input",
-      barrierColor: Colors.black.withAlpha(128), // Dims the background.
+      barrierColor: Colors.black.withAlpha(128),
       transitionDuration: Duration(milliseconds: 300),
       pageBuilder: (context, anim1, anim2) {
         return Material(
           type: MaterialType.transparency,
-          child: LayoutBuilder(builder: (context, constraints) {
-            return Container(
-              padding: EdgeInsets.all(20),
-              margin: EdgeInsets.symmetric(
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              return Container(
+                // Dialog Card
+                margin: EdgeInsets.symmetric(
                   horizontal: constraints.maxWidth / 7,
-                  vertical: constraints.maxHeight / 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              // Use a Stack to position the "X" button over the content.
-              child: Stack(
-                children: [
-                  // Main content of the dialog.
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text("Plan New Trip", style: TextStyle(fontSize: 16.5)),
-                      TextFormField(
-                        controller: _mTitleController,
-                        decoration: InputDecoration(labelText: 'Title'),
-                      ),
-                      TextFormField(
-                        controller: _mLocationController,
-                        decoration: InputDecoration(labelText: 'Location'),
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _mStartDateController,
-                              readOnly: true, // Prevent manual editing.
-                              decoration: InputDecoration(
-                                labelText: 'Start Date',
-                                suffixIcon: Icon(Icons.calendar_today),
-                              ),
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2101),
-                                );
-                                if (pickedDate != null) {
-                                  _mStartDateController.text =
-                                      DateFormat('yyyy-MM-dd')
-                                          .format(pickedDate);
-                                }
-                              },
+                  vertical: constraints.maxHeight / 10,
+                ),
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Stack(
+                  children: [
+                    // Main Content
+                    Column(
+                      mainAxisSize: MainAxisSize.min, // Wrap content height
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Dialog Title
+                        Text(
+                          "Create New Trip",
+                          style: TextStyle(
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                        SizedBox(height: 20),
+
+                        // Trip Name Field
+                        TextFormField(
+                          controller: _mTitleController,
+                          decoration: InputDecoration(
+                            labelText: 'Trip Name',
+                            hintText: 'Summer Vacation',
+                          ),
+                        ),
+                        SizedBox(height: 12),
+
+                        // Location Field
+                        TextFormField(
+                          controller: _mLocationController,
+                          decoration: InputDecoration(
+                            labelText: 'Location',
+                            hintText: 'Search for location...',
+                            suffixIcon: Icon(Icons.search),
+                          ),
+                        ),
+                        SizedBox(height: 12),
+
+                        // Placeholder Map Container
+                        // Replace with a real map widget if desired
+                        Container(
+                          height: 150,
+                          decoration: BoxDecoration(
+                            color: Colors.grey.shade200,
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Center(
+                            child: Text(
+                              'Map goes here',
+                              style: TextStyle(color: Colors.grey),
                             ),
                           ),
-                          SizedBox(width: 8.0), // Spacing between the fields.
-                          Expanded(
-                            child: TextFormField(
-                              controller: _mEndDateController,
-                              readOnly: true,
-                              decoration: InputDecoration(
-                                labelText: 'End Date',
-                                suffixIcon: Icon(Icons.calendar_today),
+                        ),
+                        SizedBox(height: 12),
+
+                        // Date Fields (Start + End)
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                controller: _mStartDateController,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: 'Start Date',
+                                  hintText: 'mm/dd/yy',
+                                  suffixIcon: Icon(Icons.calendar_today),
+                                ),
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2101),
+                                  );
+                                  if (pickedDate != null) {
+                                    _mStartDateController.text =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(pickedDate);
+                                  }
+                                },
                               ),
-                              onTap: () async {
-                                DateTime? pickedDate = await showDatePicker(
-                                  context: context,
-                                  initialDate: DateTime.now(),
-                                  firstDate: DateTime(2000),
-                                  lastDate: DateTime(2101),
-                                );
-                                if (pickedDate != null) {
-                                  _mEndDateController.text =
-                                      DateFormat('yyyy-MM-dd')
-                                          .format(pickedDate);
-                                }
-                              },
                             ),
+                            SizedBox(width: 8),
+                            Expanded(
+                              child: TextFormField(
+                                controller: _mEndDateController,
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  labelText: 'End Date',
+                                  hintText: 'mm/dd/yy',
+                                  suffixIcon: Icon(Icons.calendar_today),
+                                ),
+                                onTap: () async {
+                                  DateTime? pickedDate = await showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime.now(),
+                                    firstDate: DateTime(2000),
+                                    lastDate: DateTime(2101),
+                                  );
+                                  if (pickedDate != null) {
+                                    _mEndDateController.text =
+                                        DateFormat('yyyy-MM-dd')
+                                            .format(pickedDate);
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(height: 20),
+
+                        // Create Trip Button
+                        ElevatedButton(
+                          onPressed: () {
+                            final title = _mTitleController.text;
+                            final location = _mLocationController.text;
+                            final startDate = _mStartDateController.text;
+                            final endDate = _mEndDateController.text;
+
+                            // Dispatch an event to add the new trip.
+                            _tripInfoBloc.add(
+                              AddTripInfoEvent(
+                                title: title,
+                                location: location,
+                                startDate: startDate,
+                                endDate: endDate,
+                              ),
+                            );
+
+                            // Clear fields and close dialog.
+                            _mTitleController.clear();
+                            _mLocationController.clear();
+                            _mStartDateController.clear();
+                            _mEndDateController.clear();
+                            Navigator.of(context).pop();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            padding: EdgeInsets.symmetric(vertical: 14),
+                            textStyle: TextStyle(fontSize: 16),
                           ),
-                        ],
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          final title = _mTitleController.text;
-                          final location = _mLocationController.text;
-                          final startDate = _mStartDateController.text;
-                          final endDate = _mEndDateController.text;
-                          // Dispatch an event to add the new trip.
-                          _tripInfoBloc.add(
-                            AddTripInfoEvent(
-                              title: title,
-                              location: location,
-                              startDate: startDate,
-                              endDate: endDate,
-                            ),
-                          );
-                          _mTitleController.clear();
-                          _mLocationController.clear();
-                          Navigator.of(context).pop(); // Close the dialog.
-                        },
-                        child: Text('Submit'),
-                      ),
-                    ],
-                  ),
-                  // Positioned "X" button in the top-right corner.
-                  Positioned(
-                    top: 0,
-                    right: 0,
-                    child: IconButton(
-                      icon: Icon(Icons.close),
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Close the dialog.
-                      },
+                          child: Text('Create Trip'),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            );
-          }),
+
+                    // "X" close button (top-right)
+                    Positioned(
+                      top: 0,
+                      right: 0,
+                      child: IconButton(
+                        icon: Icon(Icons.close),
+                        onPressed: () => Navigator.of(context).pop(),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
       transitionBuilder: (context, anim1, anim2, child) {
-        // Scale transition for the "expanding" effect.
         return ScaleTransition(
           scale: CurvedAnimation(parent: anim1, curve: Curves.easeOutBack),
           child: child,
@@ -236,7 +299,16 @@ class _MyPGCState extends State<PersonalGroupCoordinatorPage> {
                         width: 100.0,
                         height: 40.0,
                         child: FloatingActionButton(
-                          onPressed: _openTripDialog,
+                          onPressed: () {
+                            _openTripDialog(
+                              context,
+                              _tripInfoBloc,
+                              _mTitleController,
+                              _mLocationController,
+                              _mStartDateController,
+                              _mEndDateController,
+                            );
+                          },
                           backgroundColor: Color.fromARGB(255, 41, 52, 204),
                           child: Row(
                             children: [
